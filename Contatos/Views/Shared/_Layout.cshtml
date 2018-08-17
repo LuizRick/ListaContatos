@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css"/>
+    <style>
+        .hide{
+            display:none;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="@Url.Action("Create")" class="btn btn-primary">&plus;Novo Contato</a>
+        <a href="@Url.Action("Listar")" class="btn btn-primary">Listar Contatos</a>
+    </nav>
+    <div>
+        @RenderBody()
+    </div>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/Validations.js"></script>
+</body>
+</html>
