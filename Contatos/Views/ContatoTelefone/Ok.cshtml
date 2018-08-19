@@ -1,0 +1,14 @@
+﻿@model Contatos.Models.Telefone
+@{
+    ViewBag.Title = "Salvo com sucesso";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-5">
+            <div class="alert alert-success">
+                Numero de telefone incluido com sucesso
+            </div>
+            <a href="@Html.Action("Details" , "Contato", new { id = Model.Contato.Id})">Detalhes</a>
+        </div>
+    </div>
+</div>

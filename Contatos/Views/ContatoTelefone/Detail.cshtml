@@ -1,0 +1,21 @@
+﻿@model Contatos.Models.Telefone
+@{
+    ViewBag.Title = "Detalhe do telefone";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-5">
+            @using (Html.BeginForm("Edit", "ContatoTelefone", FormMethod.Post))
+            {
+                <div class="form-group">
+                    <label for="numero">Numero</label>
+                    @Html.TextBoxFor(m => m.Numero, new { id = "numero", @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label>Tipo:</label>
+                    
+                </div>
+            }
+        </div>
+    </div>
+</div>

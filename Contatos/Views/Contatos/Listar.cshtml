@@ -1,4 +1,6 @@
 ﻿@model List<Contatos.Models.Contato>
+
+@using Contatos.Helpers
 @{
     ViewBag.Title = "listar";
 }
@@ -36,13 +38,14 @@
                         <tr>
                             <td>&nbsp;</td>
                             <td>
-                                <a href="@Url.Action("Listar",new { Id = Model[i].Id})"> @Html.DisplayFor(m => m[i].Nome)</a>
+                                <a href="@Url.Action("Details",new { Id = Model[i].Id})"> @Html.DisplayFor(m => m[i].Nome)</a>
                             </td>
                             <td>
 
-                                @if (Model[i].Telefones != null)
+                                @if (Model[i].Telefones != null && Model[i].Telefones.FirstOrDefault().Numero != "")
                                 {
                                     <span> @Model[i].Telefones[0].Numero</span>
+                                    <span>@EnumExtensions.TelefoneTypeName(@Model[i].Telefones[0].Tipo)</span>
                                 }
                                 else
                                 {
@@ -50,9 +53,10 @@
                                 }
                             </td>
                             <td>
-                                @if (Model[i].Emails != null)
+                                @if (Model[i].Emails != null && Model[i].Emails.FirstOrDefault().Endereco != "")
                                 {
-                                    <span> @Model[i].Emails[0].Contato</span>
+                                    <span> @Model[i].Emails[0].Endereco</span>
+                                    <span>(@EnumExtensions.EmailTypeName(Model[i].Emails[0].Tipo))</span>
                                 }
                                 else
                                 {

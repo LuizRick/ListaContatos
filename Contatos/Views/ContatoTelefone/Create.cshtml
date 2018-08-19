@@ -1,0 +1,26 @@
+﻿@model Contatos.Models.Telefone
+@{
+    ViewBag.Title = "Adicionar telefone";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-5">
+            <fieldset>
+                <legend>Novo telefone</legend>
+                @using (Html.BeginForm("Create", "ContatoTelefone", FormMethod.Post))
+                {
+                    <div class="form-group">
+                        <label for="numero">Numero:(Detalhe: DDD e Número tudo junto Ex: DD99999999)</label>
+                        @Html.TextBoxFor(m => m.Numero, new { id = "numero", @class = "form-control", @dataType = "number", maxlength = "11" })
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo">Tipo:</label>
+                        @Html.EnumDropDownListFor(m => m.Tipo, "Selecionar tipo", new { @class = "form-control" })
+                    </div>
+                    @Html.HiddenFor(m => m.Contato.Id);
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                }
+            </fieldset>
+        </div>
+    </div>
+</div>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Contatos.Models.DAL;
+using Contatos.Models.BLL;
 
 /**
  * Geralmente faço todas a requisições via ajax porém para simplificar farei tudo sem usar ajax
@@ -13,6 +14,17 @@ namespace Contatos.Views
 {
     public class ContatosController : Controller
     {
+        private Dictionary<string, List<IStrategy>> validacoes = new Dictionary<string, List<IStrategy>>();
+
+        public ContatosController()
+        {
+            List<IStrategy> salvarContatos = new List<IStrategy>
+            {
+                new ValidarNomeUnico()
+            };
+            validacoes.Add("SALVAR", salvarContatos);
+        }
+
         // GET: Contatos
         public ActionResult Index()
         {
@@ -22,12 +34,18 @@ namespace Contatos.Views
         // GET: Contatos/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            ContatoDAL contatoDAL = new ContatoDAL();
+            var model = contatoDAL.Consultar(new Models.Contato()
+            {
+                Id = id
+            });
+            return View(model.FirstOrDefault());
         }
 
         // GET: Contatos/Create
         public ActionResult Create()
         {
+            ViewBag.ErrorMsg = null;
             return View();
         }
 
@@ -37,9 +55,12 @@ namespace Contatos.Views
         {
             try
             {
-                // TODO: Add insert logic here
-                ContatoDAL dal = new ContatoDAL();
-                dal.Salvar(contato);
+                string msg = ExecutaRegrasNegocio("SALVAR", contato);
+                if (msg != null)
+                {
+                    ViewBag.ErrorMsg = msg;
+                    return View(contato);
+                }
                 return RedirectToAction("Ok");
             }
             catch
@@ -56,12 +77,13 @@ namespace Contatos.Views
 
         // POST: Contatos/Edit/5
         [HttpPost]
-        public ActionResult Edit(Models.Contato collection)
+        public ActionResult Edit(Models.Contato contato)
         {
             try
             {
                 // TODO: Add update logic here
-
+                ContatoDAL contatoDAL = new ContatoDAL();
+                
                 return RedirectToAction("Index");
             }
             catch
@@ -109,6 +131,20 @@ namespace Contatos.Views
         public ActionResult Ok()
         {
             return View();
+        }
+
+
+        private string ExecutaRegrasNegocio(string acao, Contatos.Models.Entidade entidade)
+        {
+            string msg = null;
+            foreach (var list in this.validacoes[acao])
+            {
+                msg = list.Processar(entidade);
+                if (msg != null)
+                    return msg;
+            }
+
+            return msg;
         }
     }
 }
